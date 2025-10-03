@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\BookingTransportWidget;
+use App\Filament\Widgets\BookingWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -27,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->brandName("2Logitaly")
             ->default()
             ->id('admin')
             ->path('admin')
@@ -37,10 +40,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 BreezyCore::make()
                     ->myProfile(
-                        shouldRegisterUserMenu: true, // Sets the 'account' link in the panel User Menu (default = true)
-                        // userMenuLabel: 'My Profile', // Customizes the 'account' link label in the panel User Menu (default = null)
-                        // shouldRegisterNavigation: false, // Adds a main navigation item for the My Profile page (default = false)
-                        // navigationGroup: 'Settings', // Sets the navigation group for the My Profile page (default = null)
+                        shouldRegisterUserMenu: true,
                         hasAvatars: true, // Enables the avatar upload form component (default = false)
                         slug: 'my-account' // Sets the slug for the profile page (default = 'my-profile')
                     )
@@ -49,8 +49,7 @@ class AdminPanelProvider extends PanelProvider
                         // requiresCurrentPassword: true, // when false, the user can update their password without entering their current password. (default = true)
                     )
                     ->enableTwoFactorAuthentication(
-                        force: false, // force the user to enable 2FA before they can use the application (default = false)
-                        // action: CustomTwoFactorPage::class, // optionally, use a custom 2FA page
+                        force: false,
                         authMiddleware: MustTwoFactor::class, // optionally, customize 2FA auth middleware or disable it to register manually by setting false
                         scopeToPanel: true, // scope the 2FA only to the current panel (default = true)
                     )
@@ -65,8 +64,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+                BookingTransportWidget::class,
+                BookingWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
